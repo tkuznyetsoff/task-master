@@ -4,5 +4,10 @@ export default {
 	theme: {
 		extend: {}
 	},
-	plugins: []
+	plugins: [],
+	safelist: [
+		{
+			pattern: /(bg|text|border)-(\w+)-(100|600)$/
+		}
+	]
 }

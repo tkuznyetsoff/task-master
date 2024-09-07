@@ -19,14 +19,19 @@
 				<td class="p-4">{{ task.title }}</td>
 				<td class="p-4">{{ task.description }}</td>
 				<td class="p-4">{{ task.dueDate }}</td>
-				<td class="p-4">{{ task.status }}</td>
+				<td class="p-4">
+					<AppBadge :color="badgeMap.get(task.status)">
+						{{ task.status }}
+					</AppBadge>
+				</td>
 			</tr>
 		</table>
 	</div>
 </template>
 
 <script setup lang="ts">
-import type { Task } from '@/types'
+import AppBadge from '@/components/AppBadge/AppBadge.vue';
+import type { Task, Status, TailwindColors } from '@/types'
 
 const { items } = defineProps<{
 	items: Task[]
@@ -35,4 +40,10 @@ const { items } = defineProps<{
 defineEmits<{
 	itemClick: [task: Task]
 }>()
+
+const badgeMap = new Map<Status, TailwindColors>([
+	['completed', 'green'],
+	['in progress', 'sky'],
+	['pending', 'gray'],
+])
 </script>

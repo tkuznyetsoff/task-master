@@ -1,3 +1,5 @@
+import type { DefaultColors } from 'tailwindcss/types/generated/colors'
+
 export type Status = 'pending' | 'in progress' | 'completed'
 
 export interface Task {
@@ -7,3 +9,5 @@ export interface Task {
 	dueDate: string
 	status: Status
 }
+
+export type TailwindColors = keyof DefaultColors
