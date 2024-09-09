@@ -10,7 +10,7 @@ export interface TaskBase {
 }
 
 export interface Task extends TaskBase {
-	id: number
+	id?: number
 }
 
 export type TailwindColors = keyof DefaultColors

@@ -1,6 +1,6 @@
 <template>
 	<AppDrawer :visible="!!editedTask">
-		<h2 class="text-xl font-bold mt-4 mb-8">Edit task</h2>
+		<h2 class="text-xl font-bold mt-4 mb-8">{{ inEditMode ? 'Edit' : 'Create' }} task</h2>
 		<form id="task-form" class="flex flex-col gap-4" @submit.prevent="onSubmit">
 			<AppInput label="Title" v-model="formModel.title" />
 			<AppTextarea label="Description" v-model="formModel.description" />
@@ -25,13 +25,14 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, watch, toRefs } from 'vue'
-import type { TaskBase, Task } from '@/types'
+import { reactive, watch, toRefs, computed } from 'vue'
+import type { Task } from '@/types'
 import AppDrawer from '@/components/app-drawer/AppDrawer.vue'
 import AppInput from '@/components/form/app-input/AppInput.vue'
 import AppTextarea from '@/components/form/app-textarea/AppTextarea.vue'
 import AppSelect from '@/components/form/app-select/AppSelect.vue'
 import AppButton from '@/components/app-button/AppButton.vue'
+import { useTask } from '@/composables/useTask'
 
 const props = defineProps<{
 	editedTask: Task | null
@@ -39,21 +40,24 @@ const props = defineProps<{
 const { editedTask } = toRefs(props)
 
 const emit = defineEmits<{
-	(e: 'create', id: number): void
-	(e: 'update', value: { data: TaskBase; id: Task['id'] }): void
-	(e: 'cancel'): void
+	'create': [task: Task]
+	'update': [task: Task]
+	'cancel': []
 }>()
 
-const formModel = reactive<TaskBase>({
-	title: '',
-	description: '',
-	dueDate: '',
-	status: 'pending'
-})
+const { getDefaultTaskModel } = useTask()
+
+const inEditMode = computed(() => typeof editedTask.value?.id === 'number')
+
+const formModel = reactive<Task>(getDefaultTaskModel())
 
 const onSubmit = () => {
 	if (!editedTask.value) return
-	emit('update', { data: formModel, id: editedTask.value.id })
+	if (inEditMode.value) {
+		emit('update', { id: editedTask.value.id, ...formModel })
+	} else {
+		emit('create', formModel)
+	}
 }
 
 watch(editedTask, () => {
