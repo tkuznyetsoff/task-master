@@ -18,7 +18,7 @@
 			>
 				<td class="p-4">{{ task.title }}</td>
 				<td class="p-4">{{ task.description }}</td>
-				<td class="p-4">{{ task.dueDate }}</td>
+				<td class="p-4 whitespace-nowrap">{{ task.dueDate }}</td>
 				<td class="p-4">
 					<AppBadge :color="badgeMap.get(task.status)">
 						{{ task.status }}
@@ -30,7 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import AppBadge from '@/components/AppBadge/AppBadge.vue';
+import AppBadge from '@/components/app-badge/AppBadge.vue'
 import type { Task, Status, TailwindColors } from '@/types'
 
 const { items } = defineProps<{
@@ -44,6 +44,6 @@ defineEmits<{
 const badgeMap = new Map<Status, TailwindColors>([
 	['completed', 'green'],
 	['in progress', 'sky'],
-	['pending', 'gray'],
+	['pending', 'gray']
 ])
 </script>

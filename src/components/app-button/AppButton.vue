@@ -3,7 +3,8 @@
 		type="button"
 		:class="[
 			{
-				'bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white': variant === 'primary',
+				'border-transparent bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white':
+					variant === 'primary',
 				'border border-slate-300 hover:border-slate-400 active:border-slate-500':
 					variant === 'secondary'
 			},
