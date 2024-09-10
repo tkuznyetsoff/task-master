@@ -16,9 +16,8 @@ export const useTasksStore = defineStore('tasks', () => {
 				sortDesc ? metadata.value.sort.slice(1) : metadata.value.sort
 			) as keyof TaskBase
 
-			const copy = ref(structuredClone(toRaw(tasks.value)))
-			copy.value.sort((a, b) => (a[sortKey] < b[sortKey] ? -1 : 1))
-			return sortDesc ? copy.value.reverse() : copy.value
+			tasks.value.sort((a, b) => (a[sortKey] < b[sortKey] ? -1 : 1))
+			return sortDesc ? tasks.value.reverse() : tasks.value
 		}
 
 		return tasks.value
