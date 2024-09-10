@@ -42,7 +42,7 @@
 						class="align-middle hover:text-red-500 transition-all"
 						@click.stop="$emit('removeItem', task)"
 					>
-						<AppIcon iconName="trashcan" class="invisible group-hover:visible" />
+						<AppIcon iconName="trashcan" class="md:invisible group-hover:visible" />
 					</AppButton>
 				</td>
 			</tr>

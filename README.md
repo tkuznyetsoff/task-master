@@ -10,26 +10,27 @@ TypeScript cannot handle type information for `.vue` imports by default, so we r
 
 See [Vite Configuration Reference](https://vitejs.dev/config/).
 
-## Project Setup
-
+## Instructions for setting up and running the application
 ```sh
 pnpm install
 ```
-
-### Compile and Hot-Reload for Development
-
+### Run App:
 ```sh
 pnpm dev
 ```
-
-### Type-Check, Compile and Minify for Production
-
+### Run Storybook:
 ```sh
-pnpm build
+pnpm tailwind
+pnpm storybook
 ```
 
-### Lint with [ESLint](https://eslint.org/)
 
-```sh
-pnpm lint
-```
+## Stack
+- Vue (3.5)
+- Pinia
+- Tailwind
+- Storybook
+- Typescript
+- Eslint
+- Prettier
+- Vite
