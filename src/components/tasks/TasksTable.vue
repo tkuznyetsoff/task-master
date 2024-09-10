@@ -24,7 +24,7 @@
 					<th class="bg-slate-100"></th>
 				</tr>
 			</thead>
-			<tbody>
+			<tbody class="divide-y divide-slate-300">
 				<tr
 					v-for="task in items"
 					:key="task.id"
