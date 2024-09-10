@@ -1,10 +1,28 @@
-import { ref } from 'vue'
+import { ref, computed, toRaw } from 'vue'
 import { defineStore } from 'pinia'
-import type { Task } from '@/types'
+import type { Task, TaskBase } from '@/types'
 import json from '@/assets/data.json'
 
 export const useTasksStore = defineStore('tasks', () => {
-	const tasks = ref<Task[]>(structuredClone(json as Task[]))
+	const tasks = ref(structuredClone(json as Task[]))
+	const metadata = ref<{ sort?: keyof TaskBase | `-${keyof TaskBase}` }>({
+		sort: undefined
+	})
+
+	const computedTasks = computed(() => {
+		if (metadata.value.sort !== undefined) {
+			const sortDesc = metadata.value.sort?.includes('-')
+			const sortKey = (
+				sortDesc ? metadata.value.sort.slice(1) : metadata.value.sort
+			) as keyof TaskBase
+
+			const copy = ref(structuredClone(toRaw(tasks.value)))
+			copy.value.sort((a, b) => (a[sortKey] < b[sortKey] ? -1 : 1))
+			return sortDesc ? copy.value.reverse() : copy.value
+		}
+
+		return tasks.value
+	})
 
 	function createTask(task: Task) {
 		tasks.value.push({
@@ -21,17 +39,18 @@ export const useTasksStore = defineStore('tasks', () => {
 
 	function removeTask(task: Task) {
 		const taskIndex = tasks.value.findIndex((_task) => _task.id === task.id)
-		console.log(taskIndex)
 		if (taskIndex === -1) return
 		tasks.value.splice(taskIndex, 1)
 	}
 
 	function $reset() {
+		metadata.value.sort = undefined
 		tasks.value = structuredClone(json as Task[])
 	}
 
 	return {
-		tasks,
+		tasks: computedTasks,
+		metadata,
 		createTask,
 		updateTask,
 		removeTask,

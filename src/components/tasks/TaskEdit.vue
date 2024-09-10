@@ -17,9 +17,7 @@
 		</form>
 		<template #footer>
 			<AppButton variant="secondary" @click="emit('cancel')">Cancel</AppButton>
-			<AppButton type="submit" form="task-form" class="ml-auto" variant="primary"
-				>Confirm</AppButton
-			>
+			<AppButton type="submit" form="task-form" class="ml-auto">Confirm</AppButton>
 		</template>
 	</AppDrawer>
 </template>
@@ -40,9 +38,9 @@ const props = defineProps<{
 const { editedTask } = toRefs(props)
 
 const emit = defineEmits<{
-	'create': [task: Task]
-	'update': [task: Task]
-	'cancel': []
+	create: [task: Task]
+	update: [task: Task]
+	cancel: []
 }>()
 
 const { getDefaultTaskModel } = useTask()

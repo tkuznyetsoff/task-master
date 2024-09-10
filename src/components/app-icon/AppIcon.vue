@@ -1,12 +1,13 @@
 <template>
-	<svg height="20" width="20" viewBox="0 0 24 24" class="shrink-0" v-html="template" />
+	<svg :height="size" :width="size" viewBox="0 0 24 24" class="shrink-0" v-html="template" />
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
 
-const { iconName } = defineProps<{
+const { iconName, size = '20' } = defineProps<{
 	iconName: 'trashcan' | 'down_arrow' | 'refresh'
+	size?: string
 }>()
 
 const template = computed(() => {

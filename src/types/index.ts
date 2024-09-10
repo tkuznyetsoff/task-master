@@ -13,4 +13,12 @@ export interface Task extends TaskBase {
 	id?: number
 }
 
+type TableHeaderKey = keyof TaskBase
+type TableHeaderLabel = 'Title' | 'Description' | 'Due Date' | 'Status'
+
+export interface TableHeader {
+	key: TableHeaderKey
+	label: TableHeaderLabel
+}
+
 export type TailwindColors = keyof DefaultColors

@@ -4,13 +4,9 @@
 		<AppButton variant="icon" title="Reset" @click="resetTasks">
 			<AppIcon iconName="refresh" />
 		</AppButton>
-		<AppButton variant="primary" @click="createNewTask">Create task</AppButton>
+		<AppButton @click="createNewTask">Create task</AppButton>
 	</div>
-	<TasksTable
-		:items="tasks"
-		@itemClick="setEditedTask"
-		@removeItem="store.removeTask"
-	/>
+	<TasksTable :items="tasks" @itemClick="setEditedTask" @removeItem="store.removeTask" />
 	<TaskEdit
 		:editedTask="editedTask"
 		@update="updateTask"

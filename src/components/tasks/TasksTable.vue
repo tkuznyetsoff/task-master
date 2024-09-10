@@ -3,11 +3,22 @@
 		<table class="w-full divide-y divide-slate-300">
 			<tr>
 				<th
-					v-for="header in ['Title', 'Description', 'Due date', 'Status']"
-					:key="header"
-					class="p-4 pt-6 text-left font-bold text-sm bg-slate-100"
+					v-for="header in tableHeaders"
+					:key="header.key"
+					class="group p-4 pt-6 text-left font-bold text-sm bg-slate-100 hover:bg-slate-100/50 cursor-pointer"
+					@click="sortByHeader(header.key)"
 				>
-					{{ header }}
+					<div class="flex items-center gap-2">
+						<span class="capitalize">{{ header.label }}</span>
+						<AppIcon
+							size="16"
+							iconName="down_arrow"
+							:class="[{
+								'opacity-100 !visible': metadata.sort?.includes(header.key),
+								'rotate-0': metadata.sort?.includes(header.key) && metadata.sort?.includes('-')
+							}, 'group-hover:visible invisible rotate-180 opacity-50']"
+						/>
+					</div>
 				</th>
 				<th class="bg-slate-100"></th>
 			</tr>
@@ -46,7 +57,11 @@
 import AppBadge from '@/components/app-badge/AppBadge.vue'
 import AppIcon from '@/components/app-icon/AppIcon.vue'
 import AppButton from '@/components/app-button/AppButton.vue'
-import type { Task, Status, TailwindColors } from '@/types'
+import type { Task, Status, TailwindColors, TaskBase, TableHeader } from '@/types'
+import { useTasksStore } from '@/stores/tasks'
+import { storeToRefs } from 'pinia'
+
+const { metadata } = storeToRefs(useTasksStore())
 
 const { items } = defineProps<{
 	items: Task[]
@@ -62,4 +77,31 @@ const badgeMap = new Map<Status, TailwindColors>([
 	['in progress', 'sky'],
 	['pending', 'gray']
 ])
+
+const tableHeaders: TableHeader[] = [
+	{
+		key: 'title',
+		label: 'Title'
+	},
+	{
+		key: 'description',
+		label: 'Description'
+	},
+	{
+		key: 'dueDate',
+		label: 'Due Date'
+	},
+	{
+		key: 'status',
+		label: 'Status'
+	}
+]
+
+function sortByHeader(header: keyof TaskBase) {
+	if (metadata.value.sort === header) {
+		metadata.value.sort = `-${header}`
+		return
+	}
+	metadata.value.sort = header
+}
 </script>
