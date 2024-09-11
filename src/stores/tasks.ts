@@ -1,13 +1,14 @@
-import { ref, computed, toRaw } from 'vue'
+import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import type { Task, TaskBase } from '@/types'
 import json from '@/assets/data.json'
+import { useStorage } from '@vueuse/core'
 
 export const useTasksStore = defineStore('tasks', () => {
-	const tasks = ref(structuredClone(json as Task[]))
-	const metadata = ref<{ sort?: keyof TaskBase | `-${keyof TaskBase}` }>({
+	const tasks = useStorage('tasks', ref(structuredClone(json as Task[])))
+	const metadata = useStorage('metadata', ref<{ sort?: keyof TaskBase | `-${keyof TaskBase}` }>({
 		sort: undefined
-	})
+	}))
 
 	const computedTasks = computed(() => {
 		if (metadata.value.sort !== undefined) {
